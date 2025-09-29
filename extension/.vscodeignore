@@ -1,0 +1,32 @@
+# Exclude source files as we bundle into dist
+src/**
+**/*.ts
+**/*.tsx
+
+# Keep compiled/bundled output
+!dist/**
+
+# Exclude tests, demos, and documentation
+**/test/**
+**/tests/**
+**/*.test.*
+**/demo/**
+**/archive-*/**
+**/bootstrap/**
+**/scripts/**
+**/docs/**
+**/generated/**
+
+# Exclude editor and CI config
+.vscode/**
+.github/**
+
+# Node modules excluded since we bundle dependencies into dist
+node_modules/**
+
+# Keep essential files
+!.vscodeignore
+!README.md
+!LICENSE*
+!package.json
+!dist/**
