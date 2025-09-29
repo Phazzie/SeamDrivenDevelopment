@@ -1,0 +1,249 @@
+{
+  "name": "sdd-implementation-verification",
+  "displayName": "SDD Implementation Verification",
+  "description": "AI-powered tool to catch the difference between AI claims and actual implementation reality",
+  "version": "0.1.0",
+  "publisher": "sdd-tools",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Phazzie/SeamDrivenDevelopment"
+  },
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Testing",
+    "Debuggers",
+    "Other"
+  ],
+  "keywords": [
+    "seam-driven-development",
+    "sdd",
+    "ai",
+    "implementation-verification",
+    "grok",
+    "contract-testing"
+  ],
+  "activationEvents": [
+    "onCommand:sdd.analyzeFunction",
+    "onCommand:sdd.validateContract",
+    "onCommand:sdd.generateContract",
+    "onCommand:sdd.openVerificationPanel",
+    "onLanguage:typescript",
+    "onLanguage:javascript"
+  ],
+  "main": "./dist/index.js",
+  "files": [
+    "dist/**",
+    "README.md",
+    "LICENSE.md",
+    "package.json",
+    "resources/**"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "sdd.analyzeFunction",
+        "title": "Analyze Function Implementation",
+        "category": "SDD",
+        "icon": "$(search)"
+      },
+      {
+        "command": "sdd.validateContract",
+        "title": "Validate Seam Contract",
+        "category": "SDD",
+        "icon": "$(checklist)"
+      },
+      {
+        "command": "sdd.generateContract",
+        "title": "Generate Contract from UI",
+        "category": "SDD",
+        "icon": "$(symbol-interface)"
+      },
+      {
+        "command": "sdd.showImplementationVerification",
+        "title": "Show Implementation Verification Panel",
+        "category": "SDD",
+        "icon": "$(microscope)"
+      },
+      {
+        "command": "sdd.openImplementationPanel",
+        "title": "Open Implementation Verification",
+        "category": "SDD",
+        "icon": "$(preview)"
+      },
+      {
+        "command": "sdd.analyzeSelectedFunction",
+        "title": "Analyze Selected Function",
+        "category": "SDD",
+        "icon": "$(search)"
+      },
+      {
+        "command": "sdd.generateContractFromSelection",
+        "title": "Generate Contract from Selection",
+        "category": "SDD",
+        "icon": "$(symbol-interface)"
+      },
+      {
+        "command": "sdd.validateContractFromExplorer",
+        "title": "Validate Contract File",
+        "category": "SDD",
+        "icon": "$(checklist)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "sdd.analyzeSelectedFunction",
+          "when": "editorHasSelection && resourceLangId =~ /^(typescript|javascript)$/",
+          "group": "sdd@1"
+        },
+        {
+          "command": "sdd.generateContractFromSelection",
+          "when": "editorHasSelection && resourceExtname =~ /\\.(ts|tsx|js|jsx)$/",
+          "group": "sdd@2"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "sdd.analyzeSelectedFunction",
+          "when": "editorHasSelection && resourceLangId =~ /^(typescript|javascript)$/",
+          "group": "navigation"
+        },
+        {
+          "command": "sdd.generateContractFromSelection",
+          "when": "editorHasSelection && resourceExtname =~ /\\.(ts|tsx|js|jsx)$/",
+          "group": "navigation"
+        }
+      ],
+      "tab/context": [
+        {
+          "command": "sdd.generateContract",
+          "when": "resourceExtname =~ /\\.(ts|tsx|js|jsx)$/",
+          "group": "sdd@1"
+        },
+        {
+          "command": "sdd.validateContractFromExplorer",
+          "when": "resourceExtname == '.ts' && resourceFilename =~ /\\.contract\\.ts$/",
+          "group": "sdd@2"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "sdd.validateContractFromExplorer",
+          "when": "resourceExtname == '.ts' && resourceFilename =~ /\\.contract\\.ts$/",
+          "group": "sdd@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "sdd.analyzeSelectedFunction",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "sdd.generateContractFromSelection",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "sdd.validateContractFromExplorer",
+          "when": "false"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "sdd-tools",
+          "title": "SDD Tools",
+          "icon": "$(symbol-interface)"
+        }
+      ]
+    },
+    "views": {
+      "sdd-tools": [
+        {
+          "type": "webview",
+          "id": "sdd.verificationPanel",
+          "name": "Implementation Verification",
+          "when": "sdd.verificationPanelVisible"
+        },
+        {
+          "type": "webview",
+          "id": "sdd.workflowTracker",
+          "name": "SDD Workflow Progress",
+          "when": "sdd.workflowTrackerVisible"
+        },
+        {
+          "type": "webview",
+          "id": "sdd.livePlayground",
+          "name": "Live Code Playground",
+          "when": "sdd.livePlaygroundVisible"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "SDD Implementation Verification",
+      "properties": {
+        "sdd.grokApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Grok-4-fast API key for AI analysis",
+          "scope": "machine-overridable"
+        },
+        "sdd.autoAnalyzeOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically analyze functions when files are saved"
+        },
+        "sdd.showClaimsVsReality": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show AI claims vs actual implementation comparison"
+        },
+        "sdd.enableLivePlayground": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable live code execution playground"
+        },
+        "sdd.sddWorkflowEnforcement": {
+          "type": "string",
+          "enum": [
+            "strict",
+            "warn",
+            "off"
+          ],
+          "default": "warn",
+          "description": "Enforce SDD methodology compliance"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run bundle",
+    "compile": "tsc -p ./",
+    "bundle": "npx @vercel/ncc build ./out/extension.js -o dist",
+    "clean": "npx rimraf dist",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "package:standalone": "node ./scripts/package-standalone.js",
+    "verify:pack": "node ./scripts/verify-package.js"
+  },
+  "devDependencies": {
+    "@types/node": "^18.x",
+    "@types/vscode": "^1.60.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vercel/ncc": "^0.34.0",
+    "eslint": "^8.50.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.2.2",
+    "vsce": "^2.15.0",
+    "adm-zip": "^0.5.11"
+  },
+  "dependencies": {
+    "axios": "^1.5.0"
+  }
+}
